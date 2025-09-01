@@ -10,7 +10,7 @@ In the excitement of purchasing a new touchscreen laptop, I decided to make this
 3. **Use`<crtl> + <alt> + t`** as a shortcut key.
 
 ### Preview:
-[OneTouch Demo](assets/OneTouch.gif)
+[OneTouch Demo](Assets/OneTouch.gif)
 
 
 
