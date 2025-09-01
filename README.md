@@ -1,11 +1,14 @@
 # OneTouch - toggle between touchscreen laptops with One Touch
+> Tested on Yoga Slim 2in1
 
 ### Some Background
-In the excitement of purchasing a new touchscreen laptop, i decided to make this tool in order to toggle between touchscreen and non touchscreen mode.
+In the excitement of purchasing a new touchscreen laptop, I decided to make this tool in order to toggle between touchscreen and non-touchscreen mode.
 
-### Installation: 
-1. Download the `OneTouch.exe` file and run it as administator. It should automatically place itself in the tray inside taskbar.
-2. Click on icon to toggle between ts modes.
+### Installation and Setup:
+1. Download the `OneTouch.exe` file and run it as administrator. It should automatically place itself in the tray inside the taskbar.
+2. Click on the icon to toggle between ts modes.
 3. **Use`<crtl> + <alt> + t`** as a shortcut key.
+
+
 
 
