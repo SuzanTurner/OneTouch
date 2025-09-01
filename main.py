@@ -8,7 +8,9 @@ import pystray
 from pystray import MenuItem as Item, Menu
 from PIL import Image, ImageDraw
 from win10toast import ToastNotifier
-import keyboard  # using `keyboard` lib instead of `pynput` for reliability
+import keyboard  
+from winotify import Notification, audio
+
 
 APP_NAME = "OneTouch"
 toaster = ToastNotifier()
@@ -79,7 +81,39 @@ def set_tray_state(enabled: bool):
     tray_icon.title = f"{APP_NAME} – {'Touchscreen Enabled' if enabled else 'Touchscreen Disabled'}"
 
 
-# --- actions ---
+# # --- actions ---
+# def do_toggle(_icon=None, _item=None):
+#     global touch_enabled
+#     if touch_enabled is None:
+#         touch_enabled = bool(get_touch_status())
+#     target = not touch_enabled
+#     ok = toggle_touch(enable=target)
+#     if not ok:
+#         current = get_touch_status()
+#         if current is not None:
+#             ok = (current == target)
+#     if ok:
+#         touch_enabled = target
+#         set_tray_state(touch_enabled)
+#         toaster.show_toast(APP_NAME, f"Touchscreen {'Enabled' if touch_enabled else 'Disabled'}",
+#                            duration=3, threaded=True)
+#     else:
+#         toaster.show_toast(APP_NAME, "Failed to toggle (need Admin or device not found)",
+#                            duration=4, threaded=True)
+
+import tempfile
+import os
+from winotify import Notification, audio
+
+# # --- helper: save tray icon for toast ---
+# def get_icon_path(enabled: bool) -> str:
+#     img = make_icon(enabled)
+#     tmpdir = tempfile.gettempdir()
+#     icon_path = os.path.join(tmpdir, f"onetouch_icon_{'on' if enabled else 'off'}.png")
+#     img.save(icon_path, "PNG")
+#     return icon_path
+
+
 def do_toggle(_icon=None, _item=None):
     global touch_enabled
     if touch_enabled is None:
@@ -90,14 +124,29 @@ def do_toggle(_icon=None, _item=None):
         current = get_touch_status()
         if current is not None:
             ok = (current == target)
+
     if ok:
         touch_enabled = target
         set_tray_state(touch_enabled)
-        toaster.show_toast(APP_NAME, f"Touchscreen {'Enabled' if touch_enabled else 'Disabled'}",
-                           duration=3, threaded=True)
+
+        # icon_path = get_icon_path(touch_enabled)
+        toast = Notification(app_id="OneTouch",
+                             title="",
+                             msg=f"Touchscreen {'Enabled ✅' if touch_enabled else 'Disabled ❌'}",
+                            # icon=icon_path,
+                             duration="short")
+        toast.set_audio(audio.Default, loop=False)
+        toast.show()
+
     else:
-        toaster.show_toast(APP_NAME, "Failed to toggle (need Admin or device not found)",
-                           duration=4, threaded=True)
+        # icon_path = get_icon_path(False)
+        toast = Notification(app_id="OneTouch",
+                             title="",
+                             msg="⚠️ Failed to toggle (need Admin or device not found)",
+                             # icon=icon_path,
+                             duration="long")
+        toast.set_audio(audio.Reminder, loop=False)
+        toast.show()
 
 
 def on_quit(_icon=None, _item=None):
